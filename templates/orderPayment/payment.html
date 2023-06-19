@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <body>
+                
+        <h2>Payment Details </h2>
+        <p>Order ID: {{ order.orderid }}</p>
+        <p>Control Number: {{ order.controlno }}</p>
+        <p>User ID: {{ order.userid }}</p>
+        <hr>
+        <form id="paymentForm">
+            {% csrf_token %}
+            <label for="paymentChannel">Payment Channel:</label>
+            <select name="paymentChannel" id="paymentChannel">
+                <option value="channel1">Payment Channel 1</option>
+                <option value="channel2">Payment Channel 2</option>
+                <!-- Add more options for different payment channels -->
+            </select>
+            <br>
+            <!-- Include additional fields for payment details if needed -->
+            <br>
+            <button type="submit">Proceed to Payment</button>
+            <button type="button" onclick="cancelOrder()">Cancel Order</button>
+        </form>
+
+    </body>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function cancelOrder() {
+            // Get the order ID from the HTML template
+            const orderID = "{{ order.id }}";
+        
+            // Get the CSRF token
+            const csrftoken = getCookie('csrftoken');
+        
+            // Send a DELETE request to the API endpoint for canceling the order
+            fetch(`/api/orders/${orderID}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Order canceled successfully, redirect to a confirmation page or perform any additional actions
+                        alert('Order canceled successfully.');
+                        window.location.href = '/api/foods';
+                    } else {
+                        // Handle the case when order cancellation fails
+                        alert('Failed to cancel the order.');
+                    }
+                })
+                .catch(error => console.error(error));
+        }
+    </script>
+</html>
