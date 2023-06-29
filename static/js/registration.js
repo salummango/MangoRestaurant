@@ -20,10 +20,10 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             success: function(response) {
-                // Handle the successful registration response
+                // Handling the successful registration response
                 console.log(response);
                 alert('Registration successful');
-                window.location.href = 'api/login/'; // Replace with the appropriate URL for the login page
+                window.location.href = 'api/login/';
             },
             error: function(xhr, status, error) {
                 // Handle the registration error

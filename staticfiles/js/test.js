@@ -1,68 +1,89 @@
-// Make AJAX request to the API endpoint
-fetch("/api/foods")
-    .then(response => response.json())
-    .then(foods => displayFoods(foods));
+const addToCartButtons = document.querySelectorAll(".addtocart-btn");
+const itemDetailsContainer = document.getElementById("itemdetails");
+const cartTable = document.getElementById("carttable");
+const totalPrice = document.getElementById("totalprice");
+const closeBtn = document.getElementById("close");
+const clearCartBtn = document.getElementById("clearcart");
+const notification = document.getElementById("notification");
+const foodsDataElement = document.getElementById("foods-data");
+const foodsData = JSON.parse(foodsDataElement.dataset.foods);
 
-// Display the retrieved foods
-function displayFoods(foods) {
-    const foodContainer = document.getElementById("food_part");
+let cartItems = [];
+let total = 0;
 
-    foods.forEach(food => {
-        const foodDiv = document.createElement("div");
-        foodDiv.className = food.type === "pizza" ? "box1" : "box2";
+addToCartButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        const selectedFoodId = button.getAttribute("data-food-id");
+        const selectedFood = foodsData.find(food => food.id === selectedFoodId);
 
-        if (food.type === "pizza") {
-            foodDiv.innerHTML = `
-        <div><img src="${food.image}" alt="image"></div>
-        <div>
-          <h3>${food.name}</h3>
-          <p>${food.description}</p>
-          <div class="addtocart">
-            <span class="price">$${food.price}</span>
-            <button class="addtocart-btn" data-food-id="${food.id}">add to cart</button>
-          </div>
-        </div>
-      `;
-        } else {
-            foodDiv.innerHTML = `
-        <h3>${food.name}</h3>
-        <img src="${food.image}" alt="image">
-        <p>${food.description}</p>
-        <div class="addtocart">
-          <span class="price">$${food.price}</span>
-          <button class="addtocart-btn" data-food-id="${food.id}">add to cart</button>
-        </div>
-      `;
+        if (selectedFood) {
+            cartItems.push(selectedFood);
+            total += selectedFood.price;
+            updateCart();
+            showNotification("Item added to cart");
         }
+    });
+});
 
-        foodContainer.appendChild(foodDiv);
+closeBtn.addEventListener("click", () => {
+    itemDetailsContainer.style.display = "none";
+});
+
+clearCartBtn.addEventListener("click", () => {
+    cartItems = [];
+    total = 0;
+    updateCart();
+});
+
+function updateCart() {
+    cartTable.innerHTML = `
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>`;
+
+    cartItems.forEach(item => {
+        const tableRow = document.createElement("tr");
+        tableRow.innerHTML = `
+            <td>${item.name}</td>
+            <td>$${item.price}</td>
+            <td>${item.description}</td>
+            <td>
+                <button class="delete-btn" data-food-id="${item.id}">Delete</button>
+            </td>`;
+        cartTable.appendChild(tableRow);
     });
 
-    // Add event listener to "add to cart" buttons
-    const addtocartButtons = document.getElementsByClassName("addtocart-btn");
-    Array.from(addtocartButtons).forEach(button => {
-        button.addEventListener("click", addToCart);
-    });
+    totalPrice.innerText = `Total: $${total}`;
+
+    if (cartItems.length > 0) {
+        itemDetailsContainer.style.display = "block";
+    } else {
+        itemDetailsContainer.style.display = "none";
+    }
 }
 
-// Function to handle "add to cart" button click
-function addToCart(event) {
-    const foodId = event.target.dataset.foodId;
-    fetch("/api/cart/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ food_id: foodId }),
-        })
-        .then(response => {
-            if (response.ok) {
-                alert("Item added to cart!");
-            } else {
-                alert("Failed to add item to cart.");
-            }
-        })
-        .catch(error => {
-            console.error("Error adding item to cart:", error);
-        });
+cartTable.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-btn")) {
+        const foodId = event.target.getAttribute("data-food-id");
+        const foodIndex = cartItems.findIndex(item => item.id === foodId);
+
+        if (foodIndex !== -1) {
+            const deletedFood = cartItems[foodIndex];
+            cartItems.splice(foodIndex, 1);
+            total -= deletedFood.price;
+            updateCart();
+        }
+    }
+});
+
+function showNotification(message) {
+    notification.innerText = message;
+    notification.style.display = "block";
+
+    setTimeout(() => {
+        notification.style.display = "none";
+    }, 2000);
 }

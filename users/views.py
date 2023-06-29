@@ -87,7 +87,7 @@ class RegisterUser(APIView):
         serializer.save()
         
         # Redirect to the login page
-        return redirect(reverse('login'))  # Replace 'login' with the actual name of the login URL pattern
+        return redirect(reverse('login'))
 
 
 # ******* this login view does not support get method for receiving data from template
@@ -139,7 +139,7 @@ class LoginUser(APIView):
         # Creating token using JWT
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=180),
             'iat': datetime.datetime.utcnow()
         }
         
@@ -160,14 +160,26 @@ class LoginUser(APIView):
 
     
     
+# class LogoutUser(APIView):
+#     def post(self,request):
+#         response= Response()
+#         response.delete_cookie('jwt')
+#         response.data={
+#             'message':'succsessfully logout'
+#         }
+#         return response
+
 class LogoutUser(APIView):
-    def post(self,request):
-        response= Response()
+    def post(self, request):
+        response = Response()
         response.delete_cookie('jwt')
-        response.data={
-            'message':'succsessfully logout'
+        response.data = {
+            'message': 'Successfully logged out'
         }
-        return response
+        return redirect('/')
+    
+
+
     
 # class UserView(APIView):
 #     def get(self,request):
@@ -216,10 +228,18 @@ class UserView(APIView):
     #     return Response(serializer.data)
     
     # **** this return all user
+    # def get(self, request):
+    #     users = User.objects.all()
+    #     serializer = UserSerializer(users, many=True)
+    #     return Response(serializer.data)
+    
+    # this will return login user
     def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        user = self.get_user_from_token(request)
+        serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
 
     def delete(self, request):
         user = self.get_user_from_token(request)
@@ -271,5 +291,12 @@ class UserView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        
+        else:
+            print(serializer.errors)  # Print the error details for troubleshooting
+            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+def userdashboard(request):
+    return render(request=request,template_name="user/user_dashboard.html")

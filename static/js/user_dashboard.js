@@ -30,10 +30,3 @@ notifications.forEach(notification => {
 });
 
 // Profile
-const profileDetailsElement = document.querySelector('.profile-details');
-// const userProfile = fetchUserProfileFromServer(); // Replace with actual function to fetch user profile
-// profileDetailsElement.innerHTML = `
-//     <p>Name: ${userProfile.name}</p>
-//     <p>Email: ${userProfile.email}</p>
-//     <p>Phone: ${userProfile.phone}</p>
-// `;

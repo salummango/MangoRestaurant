@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'food',
-    'orderPayment',
+    
 ]
 
 MIDDLEWARE = [
@@ -157,6 +157,15 @@ JAZZMIN_SETTINGS ={
 
     # Welcome text on the login screen
     "welcome_sign": "Welcome to the MangoFood",
+
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "image/logo.jpg",
+    
+    # CSS classes that are applied to the logo above
+    "site_logo_classes": "img-circle",
+    
+    # Copyright on the footer
+    "copyright": "Mango Ltd",
 
 
 }

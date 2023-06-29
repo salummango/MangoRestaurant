@@ -450,3 +450,22 @@ footer {
 #carttable td:nth-child(3) {
     width: 40%;
 }
+
+#paymentDetails {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+    z-index: 1000;
+    height: 55%;
+    overflow-y: auto;
+}
+
+#paymentDetails #closebtn {
+    float: right;
+    font-size: 1rem;
+}

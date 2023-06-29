@@ -8,6 +8,7 @@ const clearCartBtn = document.getElementById("clearcart");
 const notification = document.getElementById("notification");
 const cartCount = document.getElementById("cartcount");
 const makeOrderBtn = document.getElementById("makeorderbtn")
+const totalprice = document.getElementById("totalPrice");
 
 let cartItems = [];
 let total = 0;
@@ -69,6 +70,7 @@ function updateCart() {
     });
 
     totalPrice.innerText = `Total: $${total}`;
+    totalprice.innerText = `Total: $${total}`;
 
     if (cartItems.length > 0) {
         itemDetailsContainer.style.display = "block";
@@ -101,57 +103,52 @@ function showNotification(message) {
 }
 
 
-// Make Order
-makeOrderBtn.addEventListener("click", () => {
-    const orderid = generateOrderId();
-    const controlno = generateControlNumber();
-    const userid = '{{ userid }}'; // Accessing the Django user ID from the template context
 
-    fetch('/api/orders/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                orderid: orderid,
-                controlno: controlno,
-                userid: userid
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const order_id = data.order_id;
-            const payment_id = data.payment_id;
-            const paymentUrl = `/api/payment/${order_id}/${payment_id}/`;
-            window.location.href = paymentUrl;
-        })
-        .catch(error => console.error(error));
 
-    // Reset orderid and controlno
-    orderid = 0;
-    controlno = '';
 
-    // Clear the cart
-    cartItems = [];
-    total = 0;
-    updateCart();
+//card
+
+const cardDetails = document.getElementById("cardDetails");
+const mobilePayment = document.getElementById("mobilePayment");
+const confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
+const closebtn = document.getElementById("closebtn");
+const paymentOption = document.querySelector('input[name="paymentOption"]');
+
+
+
+
+
+closebtn.addEventListener("click", () => {
+    itemDetailsContainer.style.display = "none";
 });
 
-// Function to generate orderid 
-function generateOrderId() {
-    // To get the current timestamp
-    const timestamp = Date.now();
-    // To enerate a random number
-    const random = Math.floor(Math.random() * 10000);
-    // Concatenate the timestamp and random number to create the orderid
-    const orderid = `${timestamp}-${random}`;
-    return orderid;
-}
+paymentOption.addEventListener("change", () => {
+    if (paymentOption.value === "card") {
+        cardDetails.style.display = "block";
+        mobilePayment.style.display = "none";
+    } else if (paymentOption.value === "mobile") {
+        cardDetails.style.display = "none";
+        mobilePayment.style.display = "block";
+    }
+});
 
-// Function to generate controlno 
-function generateControlNumber() {
-    const min = 10000000;
-    const max = 99999999;
-    const controlno = Math.floor(Math.random() * (max - min + 1) + min);
-    return controlno;
-}
+
+confirmPaymentBtn.addEventListener("click", () => {
+    const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+
+    if (selectedPaymentOption === "card") {
+        const cardNumber = document.querySelector('input[name="cardNumber"]').value;
+        const cardOwnerName = document.querySelector('input[name="cardOwnerName"]').value;
+        const cvc = document.querySelector('input[name="cvc"]').value;
+
+        // Perform card payment process using the card details
+        // Save payment details to the database
+
+    } else if (selectedPaymentOption === "mobile") {
+        const selectedMobileVendor = document.querySelector('input[name="mobileVendor"]:checked').value;
+
+        // Generate control number for mobile payment and display it
+        // Save payment details to the database
+
+    }
+});

@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('users.urls')),
     path('api/',include('food.urls')),
-    path('api/',include('orderPayment.urls')),
     path('',views.home,name='home'),
+    path('chat/', views.chat_view, name='chat'),
+    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

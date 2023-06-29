@@ -39,6 +39,7 @@ nav a {
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -243,89 +244,6 @@ footer {
 
 /* section for cart information */
 
-
-/* .cart-info {
-    width: 30%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-left: 0.5rem;
-}
-
-#notification {
-    color: black;
-    font-size: 1rem;
-    background-color: aliceblue;
-}
-
-#itemdetails {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-#itemdetails ul {
-    list-style: none;
-}
-
-.popup-content {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    width: 50%;
-    text-align: center;
-    z-index: 1000;
-}
-
-.popup-content #close {
-    float: right;
-    font-size: 1rem;
-}
-
-.btn-layer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 1rem;
-}
-
-.btn-layer>button:hover {
-    transform: scale(1.2);
-}
-
-.btn-layer>button:nth-child(1) {
-    width: 20%;
-    height: 40px;
-    border-radius: 15px;
-    border: 1px solid red;
-    background-color: white;
-    color: black;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform.4s;
-}
-
-.btn-layer>button:nth-child(2) {
-    width: 20%;
-    height: 40px;
-    border-radius: 15px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #0048bd;
-    border: #0048bd;
-    transition: transform.4s;
-} */
-
 #notification {
     color: black;
     font-size: 1rem;
@@ -449,4 +367,91 @@ footer {
 #carttable th:nth-child(3),
 #carttable td:nth-child(3) {
     width: 40%;
+}
+
+#paymentDetails {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+    z-index: 1000;
+    height: 55%;
+    overflow-y: auto;
+}
+
+#paymentDetails #closebtn {
+    float: right;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+    .logo {
+        display: none;
+    }
+    .link1 {
+        float: left;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+    #food_part {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+        margin-top: 2.5rem;
+    }
+    #food_part>.box1 {
+        width: 80%;
+        height: auto;
+    }
+    #food_part .box2 {
+        width: 70%;
+    }
+    .popup-content {
+        position: absolute;
+        top: 30%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        width: 80%;
+        text-align: center;
+        z-index: 1000;
+        height: 40%;
+        overflow-y: auto;
+    }
+    .btn-layer>button:nth-child(1) {
+        width: 30%;
+        height: 45px;
+        border-radius: 15px;
+        border: 1px solid red;
+        background-color: white;
+        color: black;
+        font-size: 20px;
+        cursor: pointer;
+        transition: transform 0.4s;
+    }
+    #paymentDetails {
+        position: absolute;
+        top: 30%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        width: 80%;
+        text-align: center;
+        z-index: 1000;
+        height: 40%;
+        overflow-y: auto;
+    }
 }

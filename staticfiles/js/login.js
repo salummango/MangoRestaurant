@@ -15,7 +15,7 @@ $(document).ready(function() {
                 console.log(response);
                 alert('Login successful');
                 // Redirect to the appropriate URL
-                window.location.href = '/dashboard/'; // Replace with the appropriate URL for the dashboard page
+                window.location.href = '/api/foods'; // Replace with the appropriate URL for the dashboard page
             },
             error: function(xhr, textStatus, errorThrown) {
                 // Handle the login error
